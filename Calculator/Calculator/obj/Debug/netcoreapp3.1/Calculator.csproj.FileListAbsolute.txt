@@ -1,0 +1,17 @@
+C:\Users\Vinay\source\repos\Calculator\Calculator\obj\Debug\netcoreapp3.1\Calculator.csprojAssemblyReference.cache
+C:\Users\Vinay\source\repos\Calculator\Calculator\obj\Debug\netcoreapp3.1\MainWindow.g.cs
+C:\Users\Vinay\source\repos\Calculator\Calculator\obj\Debug\netcoreapp3.1\App.g.cs
+C:\Users\Vinay\source\repos\Calculator\Calculator\obj\Debug\netcoreapp3.1\Calculator_MarkupCompile.cache
+C:\Users\Vinay\source\repos\Calculator\Calculator\obj\Debug\netcoreapp3.1\Calculator_MarkupCompile.lref
+C:\Users\Vinay\source\repos\Calculator\Calculator\bin\Debug\netcoreapp3.1\Calculator.exe
+C:\Users\Vinay\source\repos\Calculator\Calculator\bin\Debug\netcoreapp3.1\Calculator.deps.json
+C:\Users\Vinay\source\repos\Calculator\Calculator\bin\Debug\netcoreapp3.1\Calculator.runtimeconfig.json
+C:\Users\Vinay\source\repos\Calculator\Calculator\bin\Debug\netcoreapp3.1\Calculator.runtimeconfig.dev.json
+C:\Users\Vinay\source\repos\Calculator\Calculator\bin\Debug\netcoreapp3.1\Calculator.dll
+C:\Users\Vinay\source\repos\Calculator\Calculator\bin\Debug\netcoreapp3.1\Calculator.pdb
+C:\Users\Vinay\source\repos\Calculator\Calculator\obj\Debug\netcoreapp3.1\MainWindow.baml
+C:\Users\Vinay\source\repos\Calculator\Calculator\obj\Debug\netcoreapp3.1\Calculator.g.resources
+C:\Users\Vinay\source\repos\Calculator\Calculator\obj\Debug\netcoreapp3.1\Calculator.AssemblyInfoInputs.cache
+C:\Users\Vinay\source\repos\Calculator\Calculator\obj\Debug\netcoreapp3.1\Calculator.AssemblyInfo.cs
+C:\Users\Vinay\source\repos\Calculator\Calculator\obj\Debug\netcoreapp3.1\Calculator.dll
+C:\Users\Vinay\source\repos\Calculator\Calculator\obj\Debug\netcoreapp3.1\Calculator.pdb
