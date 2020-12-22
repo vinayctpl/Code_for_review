@@ -21,16 +21,28 @@ namespace Calculator2
     /// </summary>
     public partial class MainWindow : Window
     {
+        private TextBox _InputTextBox, _ResultTextBox;
         private Button btnShowLess,btnExpand;
         private StackPanel specialBtnStackPanel;
+        private int _Result;
+        private String _LastOperation,_TempValue;
         public MainWindow()
         {
             InitializeComponent();
             InitializeUIComponent();
+            InitializeVariables();
             CreateUI();
+        }
+        private void InitializeVariables()
+        {
+            this._Result = 0;
+            this._LastOperation = "";
+            this._TempValue = "";
         }
         private void InitializeUIComponent()
         {
+            this._InputTextBox = null;
+            this._ResultTextBox = null;
             btnShowLess = null;
             btnExpand = null;
             specialBtnStackPanel = null;
@@ -52,7 +64,7 @@ namespace Calculator2
             {
                 Style = FindResource("BorderStyle") as Style
             };
-            TextBox textBox = new TextBox()
+            _InputTextBox = new TextBox()
             {
                 Text = "0",
                 Style = FindResource("TextBoxStyle") as Style,
@@ -62,14 +74,14 @@ namespace Calculator2
             {
                 Style = FindResource("BorderStyle") as Style
             };
-            TextBox textBox2 = new TextBox()
+            this._ResultTextBox = new TextBox()
             {
                 Text = "0",
                 Style = FindResource("TextBoxStyle") as Style,
                 Name="ResultTextBox"
             };
-            border1.Child = textBox;
-            border2.Child = textBox2;
+            border1.Child = _InputTextBox;
+            border2.Child = _ResultTextBox;
             stackPanel.Children.Add(border1);
             stackPanel.Children.Add(border2);
             Grid.SetRow(stackPanel, 0);
@@ -129,6 +141,7 @@ namespace Calculator2
                     };
                 }
                 button.Content = buttonsList[i];
+                button.Click += new RoutedEventHandler(Btn_click);
                 buttonBorder.Child = button;
                 buttonStackPanel.Children.Add(buttonBorder);
             }
@@ -144,6 +157,121 @@ namespace Calculator2
             mainGrid.Children.Add(btnExpand);
         }
 
+        private void Btn_click(object sender, RoutedEventArgs e)
+        {
+            Button tempButton = e.Source as Button;
+            var a = tempButton.Content.GetType().Name;
+            if(a=="String")
+            {
+                //In this we write functionalities for Clr, HEX, OCT, DEC, BIN
+                String btnName = tempButton.Content as String;
+                _TempValue = this._InputTextBox.Text;
+                string result = "";
+                switch (btnName)
+                {
+                    case "Clr":
+                        InitializeVariables();
+                        this._InputTextBox.Text = "0";
+                        this._ResultTextBox.Text = "0";
+                        return;
+                    case "HEX":
+                        result = Convert.ToString((Int32.Parse(_TempValue)), 16);
+                        break;
+                    case "OCT":
+                        result = Convert.ToString(Int32.Parse(_TempValue), 8);
+                        break;
+                    case "BIN":
+                        result = Convert.ToString(Int32.Parse(_TempValue), 2);
+                        break;
+                    case "DEC":
+                        result = Convert.ToString(Int32.Parse(_TempValue), 10);
+                        break;
+                }
+                this._ResultTextBox.Text = result;
+                _LastOperation = "";
+                this._InputTextBox.Text = "0";
+            }
+            else if(a=="Char")
+            {
+                Char btnName = (Char) tempButton.Content;
+                System.Diagnostics.Trace.WriteLine("Char "+btnName);
+                if (Char.IsNumber(btnName))
+                {
+                    // In this we will do, for what we want to do for number
+                    int i = (int)(btnName - '0');
+                    _TempValue = this._InputTextBox.Text;
+                    if (_TempValue.Length > 9) return;
+                    if(i==0)
+                    {
+                        if (Int32.Parse(_TempValue) == 0 || _TempValue.Length > 9) return;
+                        this._InputTextBox.Text = _TempValue + "0";
+                        return;
+                    }
+                    if (Int32.Parse(_TempValue) == 0) this._InputTextBox.Text = ""+btnName;
+                    else this._InputTextBox.Text = _TempValue + btnName;
+                }
+                else
+                {
+                    //In this we will write functionalities for +, -, *, /, =
+                    if (_LastOperation == "")
+                    {
+                        _Result = Calculate();
+                        this._ResultTextBox.Text = "" + _Result;
+                        this._InputTextBox.Text = "0";
+                    }
+                    switch(btnName)
+                    {
+                        case '+':
+                            _LastOperation = "+";
+                            break;
+                        case '-':
+                            _LastOperation = "-";
+                            break;
+                        case '*':
+                            _LastOperation = "*";
+                            break;
+                        case '/':
+                            _LastOperation = "/";
+                            break;
+                        case '=':
+                            _Result = Calculate();
+                            this._ResultTextBox.Text = "" + _Result;
+                            this._InputTextBox.Text = "0";
+                            break;
+                    }
+                }
+            }
+            
+        }
+        private int Calculate()
+        {
+            try
+            {
+                int currentValue = Int32.Parse(this._InputTextBox.Text);
+                //System.Diagnostics.Trace.WriteLine(_LastOperation);
+                if (_LastOperation == "+" || _LastOperation == "")
+                {
+                    _Result = _Result + currentValue;
+                }
+                else if (_LastOperation == "-")
+                {
+                    _Result = _Result - currentValue;
+                }
+                else if (_LastOperation == "*")
+                {
+                    _Result = _Result * currentValue;
+                }
+                else if (_LastOperation == "/")
+                {
+                    _Result = _Result / currentValue;
+                }
+            }
+            catch (DivideByZeroException de)
+            {
+                MessageBox.Show("Cannot divide by zero, please enter some other value");
+            }
+            return _Result;
+        }
         private void btnExpand_Click(object sender, RoutedEventArgs e)
         {
             btnExpand.Visibility = Visibility.Collapsed;
@@ -168,6 +296,7 @@ namespace Calculator2
                     Style =FindResource("SpecialButtonStyle") as Style
                 };
                 button.Content = s;
+                button.Click += new RoutedEventHandler(Btn_click);
                 border.Child = button;
                 specialBtnStackPanel.Children.Add(border);
             }
