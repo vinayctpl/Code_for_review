@@ -26,12 +26,18 @@ namespace Calculator2
         private StackPanel specialBtnStackPanel;
         private int _Result;
         private String _LastOperation,_TempValue;
+        private List<String> _LogsList;
         public MainWindow()
         {
             InitializeComponent();
             InitializeUIComponent();
             InitializeVariables();
+            InitializeLogsList();
             CreateUI();
+        }
+        private void InitializeLogsList()
+        {
+            _LogsList = new List<String>();
         }
         private void InitializeVariables()
         {
@@ -156,6 +162,60 @@ namespace Calculator2
             Grid.SetRow(btnExpand,5);
             mainGrid.Children.Add(btnExpand);
         }
+        private void btnExpand_Click(object sender, RoutedEventArgs e)
+        {
+            btnExpand.Visibility = Visibility.Collapsed;
+            Application.Current.MainWindow.Height += 50;
+            ArrayList al = new ArrayList()
+            {
+                "HEX","OCT","BIN"
+            };
+            specialBtnStackPanel = new StackPanel()
+            {
+                Name = "buttonStackPanel6",
+                Orientation = Orientation.Horizontal
+            };
+            foreach (string s in al)
+            {
+                Border border = new Border()
+                {
+                    Style = FindResource("SpecialBtnBorderStyle") as Style
+                };
+                Button button = new Button()
+                {
+                    Style = FindResource("SpecialButtonStyle") as Style
+                };
+                button.Content = s;
+                button.Click += new RoutedEventHandler(Btn_click);
+                border.Child = button;
+                specialBtnStackPanel.Children.Add(border);
+            }
+            Border border2 = new Border()
+            {
+                Style = FindResource("LogsBtnBorderStyle") as Style
+            };
+            Button button2 = new Button()
+            {
+                Style = FindResource("LogsButtonStyle") as Style,
+                Content = "HIS",
+            };
+            button2.Click += new RoutedEventHandler(GenerateLogs);
+            border2.Child = button2;
+            specialBtnStackPanel.Children.Add(border2);
+            Grid.SetRow(specialBtnStackPanel, 5);
+            mainGrid.Children.Add(specialBtnStackPanel);
+            RowDefinition gridRow = new RowDefinition();
+            gridRow.Height = new GridLength(1, GridUnitType.Star);
+            mainGrid.RowDefinitions.Add(gridRow);
+            btnShowLess = new Button()
+            {
+                Content = "Show Less",
+                Style = FindResource("ExpandButtonStyle") as Style
+            };
+            btnShowLess.Click += new RoutedEventHandler(ShowLess_Click);
+            Grid.SetRow(btnShowLess, 6);
+            mainGrid.Children.Add(btnShowLess);
+        }
 
         private void Btn_click(object sender, RoutedEventArgs e)
         {
@@ -194,7 +254,7 @@ namespace Calculator2
             else if(a=="Char")
             {
                 Char btnName = (Char) tempButton.Content;
-                System.Diagnostics.Trace.WriteLine("Char "+btnName);
+                //System.Diagnostics.Trace.WriteLine("Char "+btnName);
                 if (Char.IsNumber(btnName))
                 {
                     // In this we will do, for what we want to do for number
@@ -245,10 +305,12 @@ namespace Calculator2
         }
         private int Calculate()
         {
+            string logString = "";
             try
             {
                 int currentValue = Int32.Parse(this._InputTextBox.Text);
                 //System.Diagnostics.Trace.WriteLine(_LastOperation);
+                logString = _Result + _LastOperation + currentValue;
                 if (_LastOperation == "+" || _LastOperation == "")
                 {
                     _Result = _Result + currentValue;
@@ -265,54 +327,14 @@ namespace Calculator2
                 {
                     _Result = _Result / currentValue;
                 }
+                logString = logString + "=" + _Result;
+                _LogsList.Add(logString);
             }
-            catch (DivideByZeroException de)
+            catch (DivideByZeroException)
             {
                 MessageBox.Show("Cannot divide by zero, please enter some other value");
             }
             return _Result;
-        }
-        private void btnExpand_Click(object sender, RoutedEventArgs e)
-        {
-            btnExpand.Visibility = Visibility.Collapsed;
-            Application.Current.MainWindow.Height += 50;
-            ArrayList al = new ArrayList()
-            {
-                "HEX","OCT","BIN","DEC"
-            };
-            specialBtnStackPanel = new StackPanel()
-            {
-                Name = "buttonStackPanel6",
-                Orientation = Orientation.Horizontal
-            };
-            foreach(string s in al)
-            {
-                Border border = new Border()
-                {
-                    Style = FindResource("SpecialBtnBorderStyle") as Style
-                };
-                Button button = new Button()
-                {
-                    Style =FindResource("SpecialButtonStyle") as Style
-                };
-                button.Content = s;
-                button.Click += new RoutedEventHandler(Btn_click);
-                border.Child = button;
-                specialBtnStackPanel.Children.Add(border);
-            }
-            Grid.SetRow(specialBtnStackPanel, 5);
-            mainGrid.Children.Add(specialBtnStackPanel);
-            RowDefinition gridRow = new RowDefinition();
-            gridRow.Height = new GridLength(1, GridUnitType.Star);
-            mainGrid.RowDefinitions.Add(gridRow);
-            btnShowLess = new Button()
-            {
-                Content="Show Less",
-                Style = FindResource("ExpandButtonStyle") as Style
-            };
-            btnShowLess.Click += new RoutedEventHandler(ShowLess_Click);
-            Grid.SetRow(btnShowLess, 6);
-            mainGrid.Children.Add(btnShowLess);
         }
 
         private void ShowLess_Click(object sender, RoutedEventArgs e)
@@ -322,6 +344,16 @@ namespace Calculator2
             btnShowLess.Visibility = Visibility.Hidden;
             btnExpand.Visibility = Visibility.Visible;
             specialBtnStackPanel.Visibility = Visibility.Hidden;
+        }
+
+        private void GenerateLogs(object sender,RoutedEventArgs e)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach(string logs in _LogsList)
+            {
+                sb.Append(logs + "\n");
+            }
+            MessageBox.Show(sb.ToString(),"History");
         }
     }
 }
