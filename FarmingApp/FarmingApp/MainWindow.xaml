@@ -1,0 +1,22 @@
+﻿<Window x:Class="FarmingApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FarmingApp"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <TextBox HorizontalAlignment="Left" Margin="250,120,0,0" Text="0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" Height="40" x:Name="txtRequirement" />
+        <Label Content=" Requirement (Kg/Week)" HorizontalAlignment="Left" Margin="40,126,0,0" VerticalAlignment="Top" Width="170"/>
+        <Button Content="Calculate" HorizontalAlignment="Left" Margin="270,190,0,0" VerticalAlignment="Top" Height="40" Width="80" AutomationProperties.Name="" Click="Button_Click"/>
+        <Label Content="0 feet square Area Required" HorizontalAlignment="Left" Margin="505,246,0,0" VerticalAlignment="Top" Width="190" x:Name="txtArea" RenderTransformOrigin="-1.233,4.521"/>
+        <Label Content="0 Plants Required" HorizontalAlignment="Left" Margin="80,246,0,0" VerticalAlignment="Top" Width="150" x:Name="txtPlants"/>
+        <Button Content="Data Entry" HorizontalAlignment="Left" Margin="700,16,0,0" VerticalAlignment="Top" Height="40" Width="80" x:Name="btnDataEntry" Click="DataEntry_Button_Click" Background="#FF60D55A"/>
+        <Label Content="Name Of Plant" HorizontalAlignment="Left" Margin="44,58,0,0" VerticalAlignment="Top" Width="170"/>
+        <TextBox HorizontalAlignment="Left" Margin="250,52,0,0" Text="0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" Height="40" x:Name="txtNameOfPlant" />
+        <Label Content="0 weeks life span" HorizontalAlignment="Left" Margin="505,301,0,0" VerticalAlignment="Top" Width="150" x:Name="txtTotalLifeSpan"/>
+        <Label Content="0 weeks put next plant from nursery into field" HorizontalAlignment="Left" Margin="80,301,0,0" VerticalAlignment="Top" Width="350" x:Name="txtAfterFirst"/>
+
+    </Grid>
+</Window>
