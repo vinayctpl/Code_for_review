@@ -13,7 +13,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
-
+using Microsoft.Win32;
+using ExcelLibrary.SpreadSheet;
+using ExcelLibrary.CompoundDocumentFormat;
 namespace FarmingApp
 {
     /// <summary>
@@ -87,6 +89,53 @@ namespace FarmingApp
         {
             DataEntry de = new DataEntry();
             de.Show();
+        }
+
+        private void btnBrowse_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            Nullable<bool> result = openFileDialog.ShowDialog();
+            if(result==true)
+            {
+                string filename = openFileDialog.FileName;
+                txtBrowse.Text = filename;
+                txtBrowse.Text = "Processing the file (Please wait...)";
+                Workbook workbook = Workbook.Load(filename);
+                Worksheet worksheet = workbook.Worksheets[0];
+                for(int rowIndex=worksheet.Cells.FirstRowIndex+1;rowIndex<=worksheet.Cells.LastRowIndex;rowIndex++)
+                {
+                    Row row = worksheet.Cells.GetRow(rowIndex);
+                    int sno = Int32.Parse(row.GetCell(0).ToString()) ;
+                    string nameOfPlant = row.GetCell(1).ToString();
+                    double distanceBtwPlants = Double.Parse(row.GetCell(2).ToString());
+                    double yieldPeriod = Double.Parse(row.GetCell(3).ToString());
+                    double growingPeriod = Double.Parse(row.GetCell(4).ToString());
+                    double nurseryTime = Double.Parse(row.GetCell(5).ToString());
+                    double plantProductivity = Double.Parse(row.GetCell(6).ToString());
+                    double requirement = Double.Parse(row.GetCell(7).ToString());
+                    double numberOfPlantsRequired = Math.Ceiling((requirement * yieldPeriod) / plantProductivity);
+                    double minAreaRequired = (numberOfPlantsRequired * Math.Pow(distanceBtwPlants, 2)) / Math.Pow(12, 2);
+                    double totalLifespan = yieldPeriod + growingPeriod;
+                    double afterFirst = yieldPeriod + nurseryTime+ 1;
+                    row.SetCell(0, new Cell(rowIndex.ToString()));
+                    row.SetCell(1, new Cell(nameOfPlant));
+                    row.SetCell(2, new Cell(distanceBtwPlants));
+                    row.SetCell(3, new Cell(yieldPeriod));
+                    row.SetCell(4, new Cell(growingPeriod));
+                    row.SetCell(5, new Cell(nurseryTime));
+                    row.SetCell(6, new Cell(plantProductivity));
+                    row.SetCell(7, new Cell(requirement));
+                    row.SetCell(8, new Cell(numberOfPlantsRequired));
+                    row.SetCell(9, new Cell(minAreaRequired.ToString("0.00")));
+                    row.SetCell(10, new Cell(totalLifespan));
+                    row.SetCell(11, new Cell(afterFirst));
+
+                }
+                worksheet.Cells.ColumnWidth[0, 1] = 3000;
+                worksheet.Cells.ColumnWidth[0, 2] = 10000;
+                workbook.Save(filename);
+                txtBrowse.Text = "Finished (check file)";
+            }
         }
     }
 }

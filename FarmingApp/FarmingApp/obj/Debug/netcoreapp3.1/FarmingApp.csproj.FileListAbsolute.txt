@@ -17,3 +17,5 @@ C:\Users\Vinay\source\repos\FarmingApp\FarmingApp\obj\Debug\netcoreapp3.1\Farmin
 C:\Users\Vinay\source\repos\FarmingApp\FarmingApp\obj\Debug\netcoreapp3.1\FarmingApp.pdb
 C:\Users\Vinay\source\repos\FarmingApp\FarmingApp\obj\Debug\netcoreapp3.1\DataEntry.g.cs
 C:\Users\Vinay\source\repos\FarmingApp\FarmingApp\obj\Debug\netcoreapp3.1\DataEntry.baml
+C:\Users\Vinay\source\repos\FarmingApp\FarmingApp\bin\Debug\netcoreapp3.1\ExcelLibrary.dll
+C:\Users\Vinay\source\repos\FarmingApp\FarmingApp\obj\Debug\netcoreapp3.1\FarmingApp.csproj.CopyComplete
